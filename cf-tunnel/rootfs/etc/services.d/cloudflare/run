@@ -1,0 +1,23 @@
+#!/usr/bin/with-contenv bashio
+# shellcheck shell=bash
+# ==============================================================================
+# Start the Cloudflare Tunnel service
+# s6-overlay docs: https://github.com/just-containers/s6-overlay
+# ==============================================================================
+
+# Add your code here
+
+# Declare variables
+declare cf_tunnel_name
+declare cf_certificate
+
+## Get the 'message' key from the user config options.
+# message=$(bashio::config 'message')
+
+
+cf_tunnel_name=$(bashio::config 'cf_tunnel_name')
+cf_certificate=$(bashio::config 'cf_certificate')
+
+## Run your program
+bashio::log.info "Starting Cloudflare Tunnel"
+exec /opt/cloudflare/cloudflared --origincert="${cf_certificate}" --config=/config/cloudflare/config-"${cf_tunnel_name}".yaml tunnel run
